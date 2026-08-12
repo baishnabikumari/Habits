@@ -49,6 +49,27 @@
                 <span class="stat-value" id="statTotalHabits">0</span>
             </div>
         </section>
+
+        <section class="checklist-section">
+            <div class="section-head">
+                <h2>Today</h2>
+            </div>
+
+            <div class="add-habit-row" id="addHabitRow">
+                <input type="text" id="newHabitInput" placeholder="Add a habit..." maxlength="40">
+                <button id="addHabitBtn" class="add-btn" aria-label="Add habit">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <ul class="habit-list" id="habitList">
+                <!-- row by js -->
+            </ul>
+            <p class="empty-state" id="emptyState">No habit yet. Add your first one above in the box.</p>
+        </section>
     </main>
     <script src="app.js"></script>
 </body>
