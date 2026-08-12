@@ -1,0 +1,89 @@
+:root {
+    --bg: #FAFAFA;
+    --surface: #FFFFFF;
+    --text: #1A1A1A;
+    --text-muted: #8A8A8A;
+    --text-faint: #B5B5B5;
+    --border: #EEEEEE;
+    --accent: #4ADE80;
+    --accent-text: #16803C;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --radius-sm: 8px;
+    --radius-sm: 12;
+}
+
+*{ box-sizing: border-box;}
+html, body { margin: 0; padding: 0; }
+
+body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 20px 32px;
+}
+
+.logo{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 17px;
+    letter-spacing: -0.01em;
+}
+
+.logo-mark{
+    color: var(--accent);
+    font-size: 12px;
+}
+
+.topbar-right{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.today-date{
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.icon-btn{
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.icon-btn:hover{
+    background: 720px;
+    color: var(--text);    
+}
+
+.wrap{
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 8px 32px 64px;
+}
+
+@media (max-width: 560px){
+    .topbar, .wrap{
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+}
