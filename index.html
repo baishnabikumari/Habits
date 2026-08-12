@@ -15,22 +15,41 @@
         <div class="topbar-right">
             <span class="today-date" id="todayDate">Loading...</span>
             <button class="icon-btn" id="themeToggle" aria-label="Toggle dark mode">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="4"></circle>
-                    <line x1="12" y1="1" x2="12" y2="2"></line>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
                     <line x1="12" y1="21" x2="12" y2="23"></line>
-                    <line x="4" y1="4" x2="5.12" y2="5.12"></line>
-                    <line x1="18" y1="18" x2="19.78" y2="19.78"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
                     <line x1="1" y1="12" x2="3" y2="12"></line>
                     <line x1="21" y1="12" x2="23" y2="12"></line>
-                    <line x1="4" y1="19" x2="5" y2="18"></line>
-                    <line x1="18" y1="5" x2="19" y2="4"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                 </svg>
             </button>
         </div>
     </header>
 
-    <main class="wrap"></main>
+    <main class="wrap">
+        <section class="stats-row" id="statsRow">
+            <div class="stat-card">
+                <span class="stat-label">Current streak</span>
+                <span class="stat-value" id="statCurrentStreak">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Longest streak</span>
+                <span class="stat-value" id="statLongestStreak">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Completion rate</span>
+                <span class="stat-value" id="statCompletionRate">0%</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Total Habits</span>
+                <span class="stat-value" id="statTotalHabits">0</span>
+            </div>
+        </section>
+    </main>
     <script src="app.js"></script>
 </body>
 </html>
