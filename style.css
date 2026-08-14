@@ -9,7 +9,7 @@
     --accent-text: #16803C;
     --shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
     --radius-sm: 8px;
-    --radius-md: 12;
+    --radius-md: 12px;
 }
 
 * {
@@ -78,7 +78,7 @@ body {
 }
 
 .icon-btn:hover {
-    background: 720px;
+    background: var(--border);
     color: var(--text);
 }
 
@@ -240,6 +240,7 @@ body {
     padding: 0;
     display: flex;
     align-items: center;
+    justify-content: center;
     transition: border-color 0.15s ease, background 0.15s ease;
 }
 
@@ -286,7 +287,7 @@ body {
     height: 26px;
     border: none;
     background: transparent;
-    color: pointer;
+    color: var(--text-faint);
     border-radius: 6px;
     display: flex;
     align-items: center;
@@ -342,7 +343,7 @@ body {
     transition: transform 0.1s ease;
 }
 
-.neat-cell:hover {
+.heat-cell:hover {
     transform: scale(1.25);
 }
 
