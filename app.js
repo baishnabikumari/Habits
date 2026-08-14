@@ -62,7 +62,8 @@ function renderHabitList() {
 
     state.habits.forEach(habit => {
         const li = document.createElement('li');
-        li.className = 'habit-row';
+        const doneToday = !!habit.completions[todayKey()];
+        li.className = 'habit-row' + (doneToday ? ' done' : '');
         li.dataset.id = habit.id;
         li.innerHTML = `
             <button class="habit-checkbox" aria-label="Mark ${habit.name} done">
@@ -83,8 +84,84 @@ function renderHabitList() {
     });
 }
 
-function render(){
+function dateKeyOffset(daysAgo) {
+    const d = new Date();
+    d.setDate(d.getDate() - daysAgo);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function toggleHabit(id) {
+    const habit = state.habits.find(h => h.id === id);
+    if (!habit) return;
+    const key = todayKey();
+    if (habit.completions[key]) {
+        delete habit.completions[key];
+    } else {
+        habit.completions[key] = true;
+    }
+    saveState();
+    render();
+}
+
+function getCurrentStreak(habit) {
+    let streak = 0;
+    let offset = habit.completions[todayKey()] ? 0 : 1;
+    while (habit.completions[dateKeyOffset(offset)]) {
+        streak++;
+        offset++;
+    }
+    return streak;
+}
+
+function getLongestStreak(habit) {
+    const days = Object.keys(habit.completions).sort();
+    if (days.length === 0) return 0;
+    let longest = 1;
+    let run = 1;
+    for (let i = 1; i < days.length; i++) {
+        const prev = new Date(days[i - 1]);
+        const curr = new Date(days[i]);
+        const diff = (curr - prev) / (1000 * 60 * 60 * 24);
+        if (diff === 1) {
+            run++;
+        } else {
+            run = 1;
+        }
+        longest = Math.max(longest, run);
+    }
+    return longest;
+}
+
+function getCompletionRate(habit) {
+    const created = new Date(habit.createdAt);
+    const today = new Date(todayKey());
+    const daysSinceCreated = Math.floor((today - created) / (1000 * 60 * 60 * 24)) + 1;
+    const doneCount = Object.keys(habit.completions).length;
+    return daysSinceCreated > 0 ? Math.round((doneCount / daysSinceCreated) * 100) : 0;
+}
+
+function updateStats() {
+    const totalHabits = state.habits.length;
+    document.getElementById('statTotalHabits').textContent = totalHabits;
+
+    if (totalHabits === 0) {
+        document.getElementById('statCurrentStreak').textContent = '0';
+        document.getElementById('statLongestStreak').textContent = '0';
+        document.getElementByIdf('statCompletionRate').textContent = '0';
+        return;
+    }
+    const currentStreak = state.habits.map(getCurrentStreak);
+    const LongestStreak = state.habits.map(getLongestStreak);
+    const rates = state.habits.map(getCompletionRate);
+
+    document.getElementById('statCurrentStreak').textContent = Math.max(...currentStreak);
+    document.getElementById('statLongestStreak').textContent = Math.max(...LongestStreak);
+    document.getElementById('statComletionRate').textContent = Math.round(rates.reduce((a, b) => a + b, 0) / rates.length) + '%';
+}
+
+function render() {
     renderHabitList();
+    updateStats();
 }
 
 addHabitBtn.addEventListener('click', () => {
@@ -94,7 +171,7 @@ addHabitBtn.addEventListener('click', () => {
 });
 
 newHabitInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter'){
+    if (e.key === 'Enter') {
         addHabit(newHabitInput.value);
         newHabitInput.value = '';
     }
@@ -102,8 +179,13 @@ newHabitInput.addEventListener('keydown', (e) => {
 
 habitListEl.addEventListener('click', (e) => {
     const deleteBtn = e.target.closest('.habit-delete');
-    if (deleteBtn){
+    if (deleteBtn) {
         deleteBtn(deleteBtn.closest('.habit-row').dataset.id);
+        return;
+    }
+    const checkbox = e.target.closest('.habit-checkbox');
+    if (checkbox) {
+        toggleHabit(checkbox.closest('habit-row').dataset.id);
     }
 });
 
