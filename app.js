@@ -156,7 +156,7 @@ function updateStats() {
 
     document.getElementById('statCurrentStreak').textContent = Math.max(...currentStreak);
     document.getElementById('statLongestStreak').textContent = Math.max(...LongestStreak);
-    document.getElementById('statComletionRate').textContent = Math.round(rates.reduce((a, b) => a + b, 0) / rates.length) + '%';
+    document.getElementById('statCompletionRate').textContent = Math.round(rates.reduce((a, b) => a + b, 0) / rates.length) + '%';
 }
 
 function render() {
@@ -180,7 +180,7 @@ newHabitInput.addEventListener('keydown', (e) => {
 habitListEl.addEventListener('click', (e) => {
     const deleteBtn = e.target.closest('.habit-delete');
     if (deleteBtn) {
-        deleteBtn(deleteBtn.closest('.habit-row').dataset.id);
+        deleteHabit(deleteBtn.closest('.habit-row').dataset.id);
         return;
     }
     const checkbox = e.target.closest('.habit-checkbox');
