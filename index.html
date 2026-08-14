@@ -70,7 +70,27 @@
             </ul>
             <p class="empty-state" id="emptyState">No habit yet. Add your first one above in the box.</p>
         </section>
+
+        <section class="heatmap-section">
+            <div class="section-head">
+                <h2>Activity</h2>
+                <span class="heatmap-range" id="heatmapRange"></span>
+            </div>
+            <div class="heatmap-scroll">
+                <div class="heatmap-grid" id="heatmapGrid"></div>
+            </div>
+            <div class="heatmap-legenc">
+                <span>Less</span>
+                <span class="legend-cell level-0"></span>
+                <span class="legend-cell level-1"></span>
+                <span class="legend-cell level-2"></span>
+                <span class="legend-cell level-3"></span>
+                <span class="legend-cell level-4"></span>
+                <span>More</span>
+            </div>
+        </section>
     </main>
+    <div class="heatmap-tooltip" id="heatmapTooltip" hidden></div>
     <script src="app.js"></script>
 </body>
 </html>

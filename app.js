@@ -159,6 +159,77 @@ function updateStats() {
     document.getElementById('statCompletionRate').textContent = Math.round(rates.reduce((a, b) => a + b, 0) / rates.length) + '%';
 }
 
+const heatmapGridEl = document.getElementById('heatmapGrid');
+const heatmapRangeEl = document.getElementById('heatmapRange');
+const heatmapTooltip = document.getElementById('heatmapTooltip');
+const HEATMAP_DAYS = 182;
+
+function completionsOnDate(key) {
+    let count = 0;
+    state.habits.forEach(habit => {
+        if (habit.completions[key]) count++;
+    });
+    return count;
+}
+
+function levelForCount(count, totalHabits) {
+    if (count === 0 || totalHabits === 0) return 0;
+    const ratio = count / totalHabits;
+    if (ratio <= 0.25) return 1;
+    if (ratio <= 0.5) return 2;
+    if (ratio <= 0.75) return 3;
+    return 4;
+}
+
+function renderHeatmap() {
+    heatmapGridEl.innerHTML = '';
+
+    const totalHabits = state.habits.length;
+    const today = new Date();
+
+    const days = [];
+    for (let i = HEATMAP_DAYS - 1; i >= 0; i--) {
+        days.push(dateKeyOffset(i));
+    }
+
+    const firstDate = new Date(days[0]);
+    const leadingBlanks = firstDate.getDay();
+    for (let i = 0; i < leadingBlanks; i++) {
+        const blank = document.createElement('div');
+        blank.className = 'heat-cell level-0';
+        blank.style.visibility = 'hidden';
+        heatmapGridEl.appendChild(blank);
+    }
+    
+
+    days.forEach(key => {
+        const count = completionsOnDate(key);
+        const level = levelForCount(count, totalHabits);
+        const cell = document.createElement('div');
+
+        cell.className = `heat-ceil level-${level}`;
+        cell.className.date = key;
+        cell.className.count = count;
+
+        cell.addEventListener('mouseenter', (e) => {
+            const d = new Date(key);
+            const label = d.toLocaleDateString('en-US', { mouth: 'short', day: 'numeric', year: 'numeric' });
+            heatmapGridEl.textContent = `${count} of ${totalHabits} habits - ${label}`;
+            heatmapGridEl.hidden = false;
+            const rect = cell.getBoundingClientRect();
+            heatmapGridEl.style.left = rect.left + rect.width / 2 + 'px';
+            heatmapTooltip.style.top = rect.top + 'px';
+        });
+        cell.addEventListener('mouseleave', () => {
+            heatmapTooltip.hidden = true;
+        });
+        heatmapGridEl.appendChild(cell);
+    });
+    const startLabel = new Date(days[0].toLocaleDateString('en-Us', { mouth: 'short', year: 'numeric' }));
+    const endLabel = today.toLocaleDateString('en-US', { mouth: 'short', year: 'numeric' });
+    heatmapGridEl.textContent = `${startLabel} - ${endLabel}`;
+}
+
 function render() {
     renderHabitList();
     updateStats();
