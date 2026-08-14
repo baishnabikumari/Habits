@@ -33,7 +33,7 @@ function uid() {
 
 function addHabit(name) {
     const trimmed = name.trim();
-    if (trimmed) return;
+    if (!trimmed) return;
     state.habits.push({ id: uid(), name: trimmed, createdAt: todayKey(), completions: {} });
     saveState()
     render();
@@ -72,7 +72,7 @@ function renderHabitList() {
                 </svg>
             </button>
             <span class="habit-name">${escapeHtml(habit.name)}</span>
-            <span class="habit-streak"></span>
+            <span class="habit-streak">${getCurrentStreak(habit) > 0 ? '🔥 ' + getCurrentStreak(habit) : ''}</span>
             <button class="habit-delete" aria-label="Delete ${habit.name}">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -147,7 +147,7 @@ function updateStats() {
     if (totalHabits === 0) {
         document.getElementById('statCurrentStreak').textContent = '0';
         document.getElementById('statLongestStreak').textContent = '0';
-        document.getElementByIdf('statCompletionRate').textContent = '0';
+        document.getElementById('statCompletionRate').textContent = '0';
         return;
     }
     const currentStreak = state.habits.map(getCurrentStreak);
@@ -207,17 +207,17 @@ function renderHeatmap() {
         const level = levelForCount(count, totalHabits);
         const cell = document.createElement('div');
 
-        cell.className = `heat-ceil level-${level}`;
-        cell.className.date = key;
-        cell.className.count = count;
+        cell.className = `heat-cell level-${level}`;
+        cell.dataset.date = key;
+        cell.dataset.count = count;
 
         cell.addEventListener('mouseenter', (e) => {
             const d = new Date(key);
-            const label = d.toLocaleDateString('en-US', { mouth: 'short', day: 'numeric', year: 'numeric' });
-            heatmapGridEl.textContent = `${count} of ${totalHabits} habits - ${label}`;
-            heatmapGridEl.hidden = false;
+            const label = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            heatmapTooltip.textContent = `${count} of ${totalHabits} habits - ${label}`;
+            heatmapTooltip.hidden = false;
             const rect = cell.getBoundingClientRect();
-            heatmapGridEl.style.left = rect.left + rect.width / 2 + 'px';
+            heatmapTooltip.style.left = rect.left + rect.width / 2 + 'px';
             heatmapTooltip.style.top = rect.top + 'px';
         });
         cell.addEventListener('mouseleave', () => {
@@ -225,14 +225,15 @@ function renderHeatmap() {
         });
         heatmapGridEl.appendChild(cell);
     });
-    const startLabel = new Date(days[0].toLocaleDateString('en-Us', { mouth: 'short', year: 'numeric' }));
-    const endLabel = today.toLocaleDateString('en-US', { mouth: 'short', year: 'numeric' });
-    heatmapGridEl.textContent = `${startLabel} - ${endLabel}`;
+    const startLabel = new Date(days[0]).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+    const endLabel = today.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+    heatmapRangeEl.textContent = `${startLabel} - ${endLabel}`;
 }
 
 function render() {
     renderHabitList();
     updateStats();
+    renderHeatmap();
 }
 
 addHabitBtn.addEventListener('click', () => {
@@ -256,7 +257,7 @@ habitListEl.addEventListener('click', (e) => {
     }
     const checkbox = e.target.closest('.habit-checkbox');
     if (checkbox) {
-        toggleHabit(checkbox.closest('habit-row').dataset.id);
+        toggleHabit(checkbox.closest('.habit-row').dataset.id);
     }
 });
 
