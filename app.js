@@ -7,6 +7,8 @@ const newHabitInput = document.getElementById('newHabitInput');
 const addHabitBtn = document.getElementById('addHabitBtn');
 
 let state = { habits: [] };
+let lastStreak = {};
+let hasRenderedOnce = false;
 
 function todayKey() {
     const d = new Date();
@@ -63,6 +65,9 @@ function renderHabitList() {
     state.habits.forEach(habit => {
         const li = document.createElement('li');
         const doneToday = !!habit.completions[todayKey()];
+        const streak = getCurrentStreak(habit);
+        const streakIncreased = hasRenderedOnce && streak > (lastStreak[habit.id] ?? 0);
+        lastStreak[habit.id] = streak;
         li.className = 'habit-row' + (doneToday ? ' done' : '');
         li.dataset.id = habit.id;
         li.innerHTML = `
@@ -82,6 +87,7 @@ function renderHabitList() {
         `;
         habitListEl.appendChild(li);
     });
+    hasRenderedOnce = true;
 }
 
 function dateKeyOffset(daysAgo) {
