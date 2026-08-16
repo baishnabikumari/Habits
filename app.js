@@ -236,6 +236,24 @@ function renderHeatmap() {
     heatmapRangeEl.textContent = `${startLabel} - ${endLabel}`;
 }
 
+function spawnConfetti(x, y){
+    const colors = ['#4ADE80', '#4ADE80', '#86EFAC'];
+    for (let i = 0; i < 8; i++){
+        const particle = document.createElement('div');
+        particle.className = 'confetti-particle';
+        particle.style.left = x + 'px';
+        particle.style.top = y + 'px';
+        particle.style.background = colors[i % colors.length];
+
+        const angle = (Math.PI * 2 * i) / 8;
+        const distance = 24 + Math.random() * 12;
+        particle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+        particle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+        document.body.appendChild(particle);
+        particle.addEventListener('animationend', () => particle.remove());
+    }
+}
+
 function render() {
     renderHabitList();
     updateStats();
@@ -263,7 +281,16 @@ habitListEl.addEventListener('click', (e) => {
     }
     const checkbox = e.target.closest('.habit-checkbox');
     if (checkbox) {
-        toggleHabit(checkbox.closest('.habit-row').dataset.id);
+        const habitRow = checkbox.closest('.habit-row');
+        const habitId = habitRow.dataset.id;
+        const habit = state.habit.find(h => h.id === habitId);
+        const wasDone = habit ? !habit.completions[todayKey()] : false;
+        const rect = checkbox.getBoundingClientRect();
+
+        toggleHabit(habitId);
+        if(!wasDone){
+            spawnConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        }
     }
 });
 
