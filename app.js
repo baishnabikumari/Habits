@@ -283,8 +283,8 @@ habitListEl.addEventListener('click', (e) => {
     if (checkbox) {
         const habitRow = checkbox.closest('.habit-row');
         const habitId = habitRow.dataset.id;
-        const habit = state.habit.find(h => h.id === habitId);
-        const wasDone = habit ? !habit.completions[todayKey()] : false;
+        const habit = state.habits.find(h => h.id === habitId);
+        const wasDone = habit ? !!habit.completions[todayKey()] : false;
         const rect = checkbox.getBoundingClientRect();
 
         toggleHabit(habitId);
