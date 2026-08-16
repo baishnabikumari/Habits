@@ -88,14 +88,14 @@ body {
     padding: 8px 32px 64px;
 }
 
-@media (max-width: 560px) {
+/* @media (max-width: 560px) {
 
     .topbar,
     .wrap {
         padding-left: 18px;
         padding-right: 18px;
     }
-}
+} */
 
 .stats-row {
     display: grid;
@@ -141,6 +141,12 @@ body {
     }
     .today-date{
         font-size: 12px;
+    }
+    .add-habit-row{
+        flex-wrap: wrap;
+    }
+    .add-habit-row input{
+        min-width: 0;
     }
 }
 
@@ -273,6 +279,9 @@ body {
     font-weight: 500;
     color: var(--text);
     transition: color 0.15s ease;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .habit-row.done .habit-name {
