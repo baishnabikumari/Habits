@@ -47,6 +47,16 @@ function deleteHabit(id) {
     render();
 }
 
+function renameHabit(id, newName){
+    const trimmed = newName.trim();
+    if(!trimmed) return;
+    const habit = state.habits.find(h => h.id === id);
+    if(!habit) return;
+    habit.name = trimmed;
+    saveState();
+    render();
+}
+
 function escapeHtml(str) {
     const div = document.createElement('div');
     div.textContent = str;
@@ -86,6 +96,24 @@ function renderHabitList() {
             </button>
         `;
         habitListEl.appendChild(li);
+        const nameEl = li.querySelector('.habit-name');
+        nameEl.addEventListener('dblclick', () => {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'habit-name-edit';
+            input.value = habit.name;
+            input.maxLength = 40;
+            nameEl.replaceWith(input);
+            input.focus();
+            input.select();
+
+            const commit = () => renameHabit(habit.id, input.value);
+            input.addEventListener('blur', commit);
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') input.blur();
+                if (e.key === 'Escape') { input.value = habit.name; input.blur(); }
+            });
+        });
     });
     hasRenderedOnce = true;
 }
@@ -270,6 +298,10 @@ newHabitInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
         addHabit(newHabitInput.value);
         newHabitInput.value = '';
+    }
+    if (e.key === 'Escape'){
+        newHabitInput.value = '';
+        newHabitInput.blur();
     }
 });
 
