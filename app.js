@@ -87,7 +87,7 @@ function renderHabitList() {
                 </svg>
             </button>
             <span class="habit-name">${escapeHtml(habit.name)}</span>
-            <span class="habit-streak${streakIncreased ? 'pulse' : '' }">${streak > 0 ? '🔥 ' + streak : ''}</span>
+            <span class="habit-streak${streakIncreased ? ' pulse' : '' }">${streak > 0 ? '🔥 ' + streak : ''}</span>
             <button class="habit-delete" aria-label="Delete ${escapeHtml(habit.name)}">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -228,15 +228,8 @@ function renderHeatmap() {
 
     const firstDate = new Date(days[0]);
     const leadingBlanks = firstDate.getDay();
-    for (let i = 0; i < leadingBlanks; i++) {
-        const blank = document.createElement('div');
-        blank.className = 'heat-cell level-0';
-        blank.style.visibility = 'hidden';
-        heatmapGridEl.appendChild(blank);
-    }
-    
 
-    days.forEach(key => {
+    days.forEach((key, index) => {
         const count = completionsOnDate(key);
         const level = levelForCount(count, totalHabits);
         const cell = document.createElement('div');
@@ -244,6 +237,9 @@ function renderHeatmap() {
         cell.className = `heat-cell level-${level}`;
         cell.dataset.date = key;
         cell.dataset.count = count;
+        //const cellIndex = leadingBlanks + index;
+        cell.style.gridRow = (index % 7) + 1;
+        cell.style.gridColumn = Math.floor(index / 7) + 1; 
 
         cell.addEventListener('mouseenter', (e) => {
             const d = new Date(key);
