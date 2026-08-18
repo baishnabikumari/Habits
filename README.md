@@ -21,6 +21,10 @@ A simple, local first habit tracker for daily tracking. No frameworks, no build 
 
 https://github.com/user-attachments/assets/ee6686d5-8f32-4e3c-b9fb-60ddc178fcd0
 
+Or visit - https://baishnabikumari.github.io/Habits/
+
+---
+
 ## Some SS while i was cooking this web...
 <img width="698" height="995" alt="Screenshot 2026-08-18 at 11 12 37 PM" src="https://github.com/user-attachments/assets/61edea28-b88b-4c0c-b45b-7fae5e980ab9" />
 <img width="732" height="865" alt="Screenshot 2026-08-14 at 12 31 17 PM" src="https://github.com/user-attachments/assets/ddab7cb5-34e4-42d5-a08c-ba4d8f4e60b3" />
