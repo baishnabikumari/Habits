@@ -2,6 +2,7 @@
 
 A simple, local first habit tracker for daily tracking. No frameworks, no build step, no backend.No frameworks, no build step, no backend, just plain HTML, CSS and JavaScript.
 
+**Note** - I have not used any AI for the readme file and in the project.
 ---
 
 ## Screenshots
